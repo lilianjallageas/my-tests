@@ -1,0 +1,12 @@
+
+/********* LANDMINE STYLE ***********/
+/************************************/
+
+#landmine {
+    width: auto;
+}
+
+#landmine tr td {
+	height: 37px;
+	width: 37px;
+}

@@ -1,0 +1,90 @@
+<!-- index.html -->
+
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>MineSweeper</title>
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<!-- CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+	<!-- Navigation Bar -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<a class="navbar-brand">VueJS Mine Sweeper</a>
+		</div>
+	</nav>
+
+	<!-- main body of our application -->
+	<div class="container" id="app_mine-sweeper">
+
+		<!-- Control Panel -->
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Control Panel</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<label>Rows</label>
+						<input type="number" class="form-control" placeholder="Rows" v-model="landmine_defaults.rows"></input>
+					</div>
+					<div class="form-group">
+						<label>Columns</label>
+						<input type="number" class="form-control" placeholder="Columns" v-model="landmine_defaults.columns"></input>
+					</div>
+					<div class="form-group">
+						<label>Number of bombs</label>
+						<input type="number" class="form-control" placeholder="Nb of bombs" v-model="landmine_defaults.nbBombs"></input>
+					</div>
+					<button class="btn btn-primary" @click="buildLandmine()">Start Landmine</button>
+					<div class="form-group">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" v-model="flagMode"> Flag Mode
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Land Mine -->
+		<div class="col-md-9">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Landmine</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-bordered" id="landmine">
+						<tr v-for="(row, i_row) of landmine">
+							<td v-for="(cell, i_col) of row" @click.left="reveal(i_row,i_col)" v-bind:class="getCellClass(cell)">
+								<span v-if="cell.isFlagged">
+									<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+								</span>
+								<span v-if="cell.isRevealed">
+									<span v-if="cell.isBomb" class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+									<span v-if="!cell.isBomb && cell.nbNearBomb!=0">{{cell.nbNearBomb}}</span>
+								</span>
+							</td>
+						</tr>
+					</table>
+					<div v-if="isGameLost" class="alert alert-danger" role="alert"><b>GAME OVER</b>, you clicked on a bomb !!!</div>
+					<div v-if="isGameWon" class="alert alert-success" role="alert"><b>GAME WIN !!!</b></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Javascript -->
+	<script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+	<script src="https://unpkg.com/vue@2.3.3"></script>
+	<script src="app.js"></script>
+</body>
+</html>
